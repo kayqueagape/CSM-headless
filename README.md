@@ -247,6 +247,23 @@ docker run -p 3000:3000 \
 
 ---
 
+## 📐 Decisões de Arquitetura
+
+### Por que Clean Architecture e não MVC simples?
+
+Em MVC tradicional, a lógica de negócio frequentemente vaza para controllers ou services sem fronteiras claras. Clean Architecture garante que:
+
+1. **O domínio não tem dependências** — pode ser testado sem Express, sem banco, sem nada
+2. **Trocar o banco é trivial** — só muda a implementação da interface
+3. **Use cases são verbosos, mas explícitos** — você sabe exatamente o que cada operação faz
+
+### Por que tsyringe e não inversify?
+
+`tsyringe` tem API mais simples e exige menos boilerplate para o mesmo resultado. Ambos usam `reflect-metadata` para injeção baseada em decorators.
+
+
+---
+
 ## 📁 Variáveis de Ambiente
 
 | Variável | Padrão | Descrição |
