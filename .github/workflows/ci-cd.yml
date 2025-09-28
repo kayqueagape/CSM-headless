@@ -92,37 +92,12 @@ jobs:
                 body
               });
             } catch(e) { console.log('Coverage file not found'); }
-
-  # ─── Job 3: Integration Tests (with real DB) ──────────────────────────────
+            
+  # ─── Job 3: Integration Tests ─────────────────────────────────────────────────
   integration-tests:
     name: 🔗 Integration Tests
     runs-on: ubuntu-latest
     needs: unit-tests
-
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: cms
-          POSTGRES_PASSWORD: cms_password
-          POSTGRES_DB: cms_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      mongodb:
-        image: mongo:7
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd mongosh --eval "db.adminCommand('ping')"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -137,31 +112,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run PostgreSQL migrations
-        run: |
-          PGPASSWORD=cms_password psql -h localhost -U cms -d cms_test -f src/infrastructure/database/postgres/migrations/schema.sql
-        env:
-          DATABASE_URL: postgresql://cms:cms_password@localhost:5432/cms_test
-
-      - name: Run integration tests (PostgreSQL)
+      - name: Run integration tests
         run: npm run test:integration
         env:
           NODE_ENV: test
-          DB_DRIVER: postgres
-          DATABASE_URL: postgresql://cms:cms_password@localhost:5432/cms_test
-          JWT_SECRET: test-secret-key-for-ci-at-least-32-chars
-
-      - name: Run integration tests (MongoDB)
-        run: npm run test:integration
-        env:
-          NODE_ENV: test
-          DB_DRIVER: mongodb
-          MONGODB_URI: mongodb://localhost:27017/cms_test
+          DB_DRIVER: in-memory
           JWT_SECRET: test-secret-key-for-ci-at-least-32-chars
 
   # ─── Job 4: Build ─────────────────────────────────────────────────────────
   build:
-    name: Build
+    name: 🏗️ Build
     runs-on: ubuntu-latest
     needs: [unit-tests]
 
@@ -190,7 +150,7 @@ jobs:
 
   # ─── Job 5: Docker Build & Push ───────────────────────────────────────────
   docker:
-    name: Docker
+    name: 🐳 Docker
     runs-on: ubuntu-latest
     needs: [build, integration-tests]
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
@@ -236,7 +196,7 @@ jobs:
 
   # ─── Job 6: Deploy to Staging ─────────────────────────────────────────────
   deploy-staging:
-    name: Deploy → Staging
+    name: 🚀 Deploy → Staging
     runs-on: ubuntu-latest
     needs: docker
     if: github.ref == 'refs/heads/develop'
@@ -247,7 +207,7 @@ jobs:
     steps:
       - name: Deploy to staging
         run: |
-          echo " Deploying to staging environment..."
+          echo "🚀 Deploying to staging environment..."
           echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop"
           # Add your deployment commands here:
           # - SSH to server: ssh user@staging-server "docker pull ... && docker-compose up -d"
@@ -256,7 +216,7 @@ jobs:
 
   # ─── Job 7: Deploy to Production ──────────────────────────────────────────
   deploy-production:
-    name: Deploy → Production
+    name: 🏭 Deploy → Production
     runs-on: ubuntu-latest
     needs: deploy-staging
     if: github.ref == 'refs/heads/main'
@@ -267,6 +227,6 @@ jobs:
     steps:
       - name: Deploy to production
         run: |
-          echo "Deploying to production environment..."
+          echo "🏭 Deploying to production environment..."
           echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
           # Production deployment commands

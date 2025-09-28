@@ -5,7 +5,7 @@ import { IContentRepository } from "../../../domain/repositories/IContentReposit
 import { IAuthorRepository } from "../../../domain/repositories/IAuthorRepository";
 import { ConflictError, NotFoundError } from "../../../domain/errors/DomainError";
 import { CreateContentInput, ContentDTO } from "../../dtos/ContentDTO";
-import { TOKENS } from "../../../infrastructure/container/tokens";
+import { TOKENS } from "../../../infrastructure/tokens";
 import { ContentMapper } from "../../mappers/ContentMapper";
 
 export interface CreateContentCommand {

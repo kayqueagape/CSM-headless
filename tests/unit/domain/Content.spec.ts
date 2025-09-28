@@ -34,7 +34,7 @@ describe("Content Entity", () => {
 
     it("should throw when body is empty", () => {
       expect(() =>
-        Content.create({ ...validProps, body: " })
+        Content.create({ ...validProps, body: "" })
       ).toThrow(DomainError);
     });
 

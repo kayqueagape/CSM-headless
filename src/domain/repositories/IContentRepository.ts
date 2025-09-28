@@ -24,11 +24,6 @@ export interface ContentFilters {
   search?: string;
 }
 
-/**
- * IContentRepository — Interface (Port) do repositório de conteúdo.
- * A camada de domínio define o contrato; a infraestrutura o implementa.
- * Isso permite trocar PostgreSQL por MongoDB sem tocar em nada acima.
- */
 export interface IContentRepository {
   findById(id: string): Promise<Content | null>;
   findBySlug(slug: string): Promise<Content | null>;

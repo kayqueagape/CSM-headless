@@ -3,7 +3,7 @@ import { IContentRepository, ContentFilters } from "../../../domain/repositories
 import { IAuthorRepository } from "../../../domain/repositories/IAuthorRepository";
 import { NotFoundError, ForbiddenError } from "../../../domain/errors/DomainError";
 import { UpdateContentInput, ContentDTO, PaginatedContentDTO, ListContentInput } from "../../dtos/ContentDTO";
-import { TOKENS } from "../../../infrastructure/container/tokens";
+import { TOKENS } from "../../../infrastructure/tokens";
 import { ContentMapper } from "../../mappers/ContentMapper";
 import { ContentStatus } from "../../../domain/value-objects/ContentStatus";
 import { AuthorRole } from "../../../domain/entities/Author";

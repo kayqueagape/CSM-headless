@@ -4,7 +4,7 @@ import { Author } from "../../../domain/entities/Author";
 import { IAuthorRepository } from "../../../domain/repositories/IAuthorRepository";
 import { ConflictError, UnauthorizedError } from "../../../domain/errors/DomainError";
 import { IHashService, ITokenService } from "../../ports/services";
-import { TOKENS } from "../../../infrastructure/container/tokens";
+import { TOKENS } from "../../../infrastructure/tokens";
 
 export const RegisterSchema = z.object({
   name: z.string().min(2).max(100),

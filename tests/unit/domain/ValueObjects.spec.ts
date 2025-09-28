@@ -22,7 +22,7 @@ describe("ContentSlug Value Object", () => {
   });
 
   it("should throw for empty slug", () => {
-    expect(() => ContentSlug.create(")).toThrow(DomainError);
+    expect(() => ContentSlug.create("")).toThrow(DomainError);
   });
 
   it("should generate slug from title", () => {

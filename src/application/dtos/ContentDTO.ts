@@ -33,8 +33,6 @@ export type CreateContentInput = z.infer<typeof CreateContentSchema>;
 export type UpdateContentInput = z.infer<typeof UpdateContentSchema>;
 export type ListContentInput = z.infer<typeof ListContentSchema>;
 
-// ─── Output DTOs ─────────────────────────────────────────────────────────────
-
 export interface ContentDTO {
   id: string;
   title: string;

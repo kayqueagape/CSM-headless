@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { container } from "../../container";
 import { ITokenService } from "../../../application/ports/services";
-import { TOKENS } from "../../container/tokens";
+import { TOKENS } from "../../tokens";
 import {
   DomainError,
   NotFoundError,

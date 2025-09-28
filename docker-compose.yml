@@ -1,11 +1,10 @@
 version: '3.9'
 
 services:
-  # ─── API ──────────────────────────────────────────────────────────────────
   api:
     build:
       context: .
-      target: builder        # Use builder stage for hot-reload in dev
+      target: builder
     command: npm run dev
     ports:
       - '3000:3000'
@@ -20,7 +19,7 @@ services:
       RATE_LIMIT_MAX: 1000
       CORS_ORIGIN: '*'
     volumes:
-      - ./src:/app/src      # Hot reload
+      - ./src:/app/src
       - ./tests:/app/tests
     depends_on:
       postgres:
@@ -30,8 +29,6 @@ services:
     restart: unless-stopped
     networks:
       - cms-network
-
-  # ─── PostgreSQL ───────────────────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     environment:
@@ -51,8 +48,6 @@ services:
     restart: unless-stopped
     networks:
       - cms-network
-
-  # ─── MongoDB ──────────────────────────────────────────────────────────────
   mongodb:
     image: mongo:7
     environment:
@@ -69,8 +64,6 @@ services:
     restart: unless-stopped
     networks:
       - cms-network
-
-  # ─── PgAdmin (optional) ───────────────────────────────────────────────────
   pgadmin:
     image: dpage/pgadmin4:latest
     environment:
@@ -81,11 +74,9 @@ services:
     depends_on:
       - postgres
     profiles:
-      - tools           # Only start with: docker-compose --profile tools up
+      - tools
     networks:
       - cms-network
-
-  # ─── Mongo Express (optional) ─────────────────────────────────────────────
   mongo-express:
     image: mongo-express:latest
     environment:
